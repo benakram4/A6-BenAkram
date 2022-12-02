@@ -1,0 +1,20 @@
+
+body {  
+    background-color: #6caadf;  
+    color: rgb(32, 32, 32);  
+    font-family: "Segoe UI", "Helvetica Neue", Helvetica, Arial, sans-serif;  
+    font-size: 15px;  
+    line-height: 1.4;  
+    letter-spacing: 0.1em;
+    margin: 0;  
+    padding: 0;  
+}
+
+
+.row{
+    background-color: rgba(112, 112, 112, 0.2);
+    border-radius: 0.9em;
+    margin-top: 15px;
+    padding-top: 5px;
+    padding-bottom: 10px;
+} 

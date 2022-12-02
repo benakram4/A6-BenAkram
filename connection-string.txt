@@ -1,0 +1,1 @@
+mongodb+srv://mongoose:<mongoose16>@weba6.nnj8k3q.mongodb.net/?retryWrites=true&w=majority

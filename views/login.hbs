@@ -1,0 +1,41 @@
+{{#if errorMessage}}
+<div class="alert
+    alert-danger"> <strong>Error:</strong> {{errorMessage}}
+</div>
+{{/if}}
+
+<body>
+    <div class="container">
+      <div class="row">
+        <div class="col-md-12">
+
+        <h1>Log In</h1>
+        <hr/>
+        <!-- Form  to insert user name and password-->
+            <form name ="login" action="/login" method="post">
+            <div class = "row">
+                <div class="col-md-12">
+                    <div class="form-group">
+                       {{#if userName}}
+                                <input class="form-control" type="text" name="userName" id="userName" placeholder="User Name" required value={{userName}}>
+                            {{else}}
+                                <input class="form-control" type="text" name="userName" id="userName" placeholder="User Name" required>
+                            {{/if}}
+                    </div>
+                </div>
+            </div>
+            <div class = "row">
+                <div class="col-md-12">
+                    <div class="form-group">
+                        <input type="password" class="form-control" id="password"
+                            name="password" placeholder="Password">
+                    </div>
+                </div>
+            </div>
+            <br>
+                <input type="submit" class="btn btn-lg btn-success pull-right" value="Submit" />
+        </form>
+        </div>
+    </div>
+    </div>
+</body>

@@ -1,0 +1,44 @@
+
+<style>
+    table, th, td {
+        text-align: center;
+    }
+    a:link { color:rgb(0, 34, 255); text-decoration:none; font-weight:normal; }
+    a:visited { color: rgb(115, 0, 255); text-decoration:none; font-weight:normal; }
+    a:hover { color: rgb(255, 106, 0); text-decoration:underline; font-weight:normal; } 
+
+    h2 a:link { color:rgb(0, 0, 0); text-decoration:none; font-weight:bolder; }
+    h2 a:visited { color: rgb(0, 0, 0); text-decoration:none; font-weight:bolder; }
+    h2 a:hover { color: rgb(0, 0, 0); text-decoration:underline; font-weight:bold; } 
+
+</style>
+<div class="row">
+    <div class="col-md-12"> 
+        <h2>Departments <a href="/departments/add" class="btn btn-success pull-right">Add New Department</a></h2> 
+        <hr />
+            <div class="table-responsive">
+                <table class="table table-striped table-bordered table-hover">
+                    <thead>
+                        <tr>
+                            <th> Department Number </th>
+                            <th> Department Name </th>
+                        </tr>
+                    </thead>
+                    
+                    <tbody>
+                        {{#each departments}}
+                        <tr>
+                            <td><a href="/employees?department={{this.departmentId}}">{{this.departmentId}}</a></td>
+                            <td><a href="/department/{{departmentId}}">{{departmentName}}</a></td>
+                            
+                        </tr>
+                        {{else}}
+                            <div class="col-md-12 text-center">
+                             <strong>{{message}}</strong>
+                            </div>
+                        {{/each}}
+                    </tbody>
+                </table>  
+            </div>
+    </div>  
+</div>
