@@ -296,6 +296,7 @@ app.post("/login", function(req, res){
             email: user.email, // authenticated user's email
             loginHistory: user.loginHistory // authenticated user's loginHistory
         }
+        console.log("User date: " + user.loginHistory+ '\n');
         res.redirect('/employees');
     })
     .catch((err) => {

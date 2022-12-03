@@ -14,7 +14,7 @@ var userSchema = new Schema({
     "password": String,
     "email": String,
     "loginHistory": [{
-        "dataTime": Date,
+        "dateTime": Date,
         "userAgent": String
     }]
 });
@@ -79,9 +79,8 @@ exports.checkUser = function (userData) {
                     bcrypt.compare(userData.password, foundUser.password).then((res) => {
                         if (res === true) {
                             console.log(`\nUser found for userName: ` + userData.userName + `\n`)
-                            foundUser.loginHistory.push({ dateTime: (new Date()).toString(), userAgent: userData.userAgent });
-
-                            foundUser.updateOne(
+                            foundUser.loginHistory.push({ dateTime: (new Date()).toString(), userAgent: userData.userAgent })
+                            User.updateOne(
                             {userName: foundUser.userName },
                             {$set: { loginHistory: foundUser.loginHistory }})
                             .exec()
