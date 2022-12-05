@@ -113,6 +113,7 @@ function onHttpStart() {
     console.log("Express http server listening on port: " + HTTP_PORT);
 };
 
+//this got moved from the bottom of the file, and reorganized to be more readable
 data.initialize()
 .then(dataServiceAuth.initialize())
     .then(()=>{ 
