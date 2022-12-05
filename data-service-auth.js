@@ -33,7 +33,7 @@ exports.initialize = () => {
             else {
                 console.log(`\nConnected to MongoDB Atlas\n`);
                 //User = db.model("users", userSchema);
-                User = mongoose.model('User', UserSchema);
+                User = mongoose.model('User', userSchema);
                 module.exports = { User }
                 resolve();
             }
