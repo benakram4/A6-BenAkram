@@ -21,7 +21,7 @@ var userSchema = new Schema({
 });
 
 let User; // to be defined on new connection (see initialize)
-const URL = "mongodb+srv://webdev6:mongoose@cluster0.52rw2vp.mongodb.net/A6/?retryWrites=true&w=majority";
+const URL = "mongodb+srv://webdev6:mongoose@cluster0.52rw2vp.mongodb.net/A6?retryWrites=true&w=majority";
 
 exports.initialize = () => {
     return new Promise( (resolve, reject) => {
