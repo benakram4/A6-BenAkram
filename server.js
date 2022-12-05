@@ -113,11 +113,12 @@ function onHttpStart() {
 };
 
 data.initialize()
-    .then(dataServiceAuth.initialize())
-    .then(app.listen(HTTP_PORT, onHttpStart))
-    .catch((err) => {
-        console.log("Error: " + err);
-    });
+.then(dataServiceAuth.initialize())
+    .then(()=>{ 
+        app.listen(HTTP_PORT, onHttpStart)})
+        .catch((err)=>{
+    console.log("Error", err)
+});
 // =================================================================================================
 
 
