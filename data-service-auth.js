@@ -21,7 +21,7 @@ var userSchema = new Schema({
 });
 
 let User; // to be defined on new connection (see initialize)
-const URL = "mongodb+srv://mongoose:mongoose16@weba6.nnj8k3q.mongodb.net/?retryWrites=true&w=majority";
+const URL = "mongodb+srv://webdev6:mongoose@cluster0.52rw2vp.mongodb.net/?retryWrites=true&w=majority";
 
 exports.initialize = () => {
     return new Promise( (resolve, reject) => {
@@ -32,9 +32,9 @@ exports.initialize = () => {
             } 
             else {
                 console.log(`\nConnected to MongoDB Atlas\n`);
-                //User = db.model("users", userSchema);
-                User = mongoose.model('User', userSchema);
-                module.exports = { User }
+                User = db.model("users", userSchema);
+                //User = mongoose.model('User', userSchema);
+                //module.exports = { User }
                 resolve();
             }
         });
@@ -54,10 +54,10 @@ exports.registerUser = function (userData) {
             bcrypt.hash(userData.password, 10)
             .then((hash)=>{
                 userData.password = hash;
-                User = mongoose.model('User', UserSchema);
-                module.exports =  { User }
+                //User = mongoose.model('User', userSchema);
+                //module.exports =  { User }
                 // export the User model to a new object with userData as the data to be saved to the database  
-                let newUser = new User(userData);
+                let newUser = new User (userData);
 
                     newUser.save()
                     .then(() => {
@@ -76,7 +76,7 @@ exports.registerUser = function (userData) {
                     });
                 })
                 .catch((err) => {
-                    reject("There was an error encrypting the password: " + err + newUser);
+                    reject("There was an error encrypting the password: " + err);
                 });
         }
     });
