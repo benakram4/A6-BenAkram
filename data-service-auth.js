@@ -42,7 +42,7 @@ exports.initialize = () => {
 }
 
 exports.registerUser = function (userData) {
-    return Promise( (resolve, reject) => {
+    return new Promise( (resolve, reject) => {
         if (userData.password == null || userData.password.trim() == "" ||
             userData.password2 == null || userData.password2.trim() == "") {
             reject("Error: user name cannot be empty or only white spaces! ");
