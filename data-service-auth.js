@@ -20,7 +20,7 @@ var userSchema = new Schema({
     }]
 });
 
-var User = new Object; // to be defined on new connection (see initialize)
+let User; // to be defined on new connection (see initialize)
 const URL = "mongodb+srv://mongoose:mongoose16@weba6.nnj8k3q.mongodb.net/?retryWrites=true&w=majority";
 
 exports.initialize = () => {
@@ -56,14 +56,16 @@ exports.registerUser = function (userData) {
                 var newUser = new User(userData);
                     newUser.save()
                     .then(() => {
-                            //console.log(`\nUser ${userData.userName} registered\n`);
+                            console.log(`\nUser ${userData.userName} registered\n`);
                         resolve();
                     })
                     .catch((err) => {
                         if (err.code == 11000) {
+                            console.log(`\nUser ${userData.userName} already exists\n`);
                             reject("User Name already taken");
                         }
                         else {
+                            console.log(`\nError registering user: ${err}\n`);
                             reject("There was an error creating the user: " + err);
                         }
                     });
