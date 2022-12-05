@@ -2,9 +2,6 @@
 var mongoose = require("mongoose");
 var Schema = mongoose.Schema;
 
-var User; // to be defined on new connection (see initialize)
-const URL = "mongodb+srv://mongoose:mongoose16@weba6.nnj8k3q.mongodb.net/?retryWrites=true&w=majority";
-
 // require bcrypt for password hashing
 const bcrypt = require('bcryptjs');
 
@@ -23,6 +20,9 @@ var userSchema = new Schema({
     }]
 });
 
+var User = new Object; // to be defined on new connection (see initialize)
+const URL = "mongodb+srv://mongoose:mongoose16@weba6.nnj8k3q.mongodb.net/?retryWrites=true&w=majority";
+
 exports.initialize = () => {
     return new Promise( (resolve, reject) => {
         const db = mongoose.createConnection(URL,  {useNewUrlParser: true, useUnifiedTopology: true}, function (err) {
@@ -33,7 +33,7 @@ exports.initialize = () => {
             else {
                 console.log(`\nConnected to MongoDB Atlas\n`);
                 User = db.model("users", userSchema);
-                module.exports.User = User;
+                //module.exports.User = User;
                 resolve();
             }
         });
@@ -53,7 +53,7 @@ exports.registerUser = function (userData) {
             bcrypt.hash(userData.password, 10)
             .then((hash)=>{
                 userData.password = hash;
-                const newUser = new User(userData);
+                var newUser = new User(userData);
                     newUser.save()
                     .then(() => {
                             //console.log(`\nUser ${userData.userName} registered\n`);
