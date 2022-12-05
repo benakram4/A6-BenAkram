@@ -49,6 +49,7 @@ exports.registerUser = function (userData) {
             .then((hash) => {
                 userData.password = hash;
                 let newUser = new User1(userData);
+                
                 newUser.save()
                 .then(() => {
                     console.log(`\nUser ${newUser.userName} registered\n`);
