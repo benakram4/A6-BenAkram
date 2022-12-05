@@ -1,8 +1,9 @@
 // require mongoose and setup the Schema
 var mongoose = require("mongoose");
 var Schema = mongoose.Schema;
-let User; // to be defined on new connection (see initialize)
-let URL = "mongodb+srv://mongoose:mongoose16@weba6.nnj8k3q.mongodb.net/?retryWrites=true&w=majority";
+
+let User1={}; // to be defined on new connection (see initialize)
+const URL = "mongodb+srv://mongoose:mongoose16@weba6.nnj8k3q.mongodb.net/?retryWrites=true&w=majority";
 
 // require bcrypt for password hashing
 const  bcrypt = require('bcryptjs');
@@ -27,7 +28,7 @@ exports.initialize = () => {
                 reject(err);
             } else {
                 console.log(`\nConnected to MongoDB Atlas\n`);
-                User = db.model("a6_users", userSchema);
+                User1 = db.model("a6_users", userSchema);
                 resolve();
             }
         });
@@ -47,7 +48,7 @@ exports.registerUser = function (userData) {
             bcrypt.hash(userData.password, 10)
             .then((hash) => {
                 userData.password = hash;
-                let newUser = new User(userData);
+                let newUser = new User1(userData);
                 newUser.save()
                 .then(() => {
                     console.log(`\nUser ${newUser.userName} registered\n`);
@@ -55,7 +56,7 @@ exports.registerUser = function (userData) {
                 })
                 .catch((err) => {
                     if(err.code == 11000) {
-                        reject("User Name already taken");
+                        reject("User1 Name already taken");
                     }
                     else {
                         reject("There was an error creating the user: " + err);
@@ -71,7 +72,7 @@ exports.registerUser = function (userData) {
 
 exports.checkUser = function (userData) {
     return new Promise(function (resolve, reject) {
-        User.findOne({ userName: userData.userName })
+        User1.findOne({ userName: userData.userName })
             .exec()
             .then((foundUser) => {
                 if (!foundUser) {
@@ -83,7 +84,7 @@ exports.checkUser = function (userData) {
                         if (res === true) {
                             console.log(`\nUser found for userName: ` + userData.userName + `\n`)
                             foundUser.loginHistory.push({ dateTime: (new Date()).toString(), userAgent: userData.userAgent })
-                            User.updateOne(
+                            User1.updateOne(
                             {userName: foundUser.userName },
                             {$set: { loginHistory: foundUser.loginHistory }})
                             .exec()
