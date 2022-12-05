@@ -34,7 +34,7 @@ exports.initialize = () => {
                 console.log(`\nConnected to MongoDB Atlas\n`);
                 //User = db.model("users", userSchema);
                 User = mongoose.model('User', UserSchema);
-                module.exports =  { User }
+                module.exports = { User }
                 resolve();
             }
         });
@@ -54,7 +54,11 @@ exports.registerUser = function (userData) {
             bcrypt.hash(userData.password, 10)
             .then((hash)=>{
                 userData.password = hash;
-                var newUser = new User(userData);
+                User = mongoose.model('User', UserSchema);
+                module.exports =  { User }
+                // export the User model to a new object with userData as the data to be saved to the database  
+                let newUser = new User(userData);
+
                     newUser.save()
                     .then(() => {
                             console.log(`\nUser ${userData.userName} registered\n`);
