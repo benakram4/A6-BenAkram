@@ -19,15 +19,15 @@ var userSchema = new Schema({
     }]
 });
 
-exports.initialize = function () {
+exports.initialize = () => {
     return new Promise(function (resolve, reject) {
-        let db = mongoose.createConnection(URL, { useNewUrlParser: true, useUnifiedTopology: true }, (err) => {
+        const db = mongoose.createConnection(URL, { useNewUrlParser: true, useUnifiedTopology: true }, function(err) {
             if (err) {
                 console.log(`\nError connecting to MongoDB Atlas: ${err}\n`);
                 reject(err);
             } else {
                 console.log(`\nConnected to MongoDB Atlas\n`);
-                User = db.model("A6_users", userSchema);
+                User = db.model("a6_users", userSchema);
                 resolve();
             }
         });
@@ -36,33 +36,36 @@ exports.initialize = function () {
 
 exports.registerUser = function (userData) {
     return new Promise(function (resolve, reject) {
-        if (userData.password.trim() === "" || userData.password === null
-            || userData.password2.trim() === "" || userData.password2 === null) {
+        if (userData.password == null || userData.password.trim() == "" || 
+        userData.password2 == null || userData.password2.trim() == "") {
             reject("Error: user name cannot be empty or only white spaces! ");
         }
         else if (userData.password != userData.password2) {
             reject("Error: passwords do not match! ");
         }
         else {
-            bcrypt.hash(userData.password, 10).then((hash) => {
+            bcrypt.hash(userData.password, 10)
+            .then((hash) => {
                 userData.password = hash;
                 let newUser = new User(userData);
-                newUser.save((err) => {
-                    if (err) {
-                        if (err.code == 11000) {
-                            reject("User Name already taken");
-                        } else {
-                            reject("There was an error creating the user: " + err);
-                        }
-                    } 
+                newUser.save()
+                .then(() => {
+                    console.log(`\nUser ${newUser.userName} registered\n`);
+                    resolve();
+                })
+                .catch((err) => {
+                    if(err.code == 11000) {
+                        reject("User Name already taken");
+                    }
                     else {
-                        resolve();
+                        reject("There was an error creating the user: " + err);
                     }
                 });
-            }).catch((err) => {
-                reject("There was an error encrypting the password");
-            });        
-        }   
+            })
+            .catch((err) => {
+                reject("There was an error encrypting the password: " + err);
+            });
+        }
     });
 };
 
