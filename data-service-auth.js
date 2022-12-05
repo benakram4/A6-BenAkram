@@ -1,44 +1,51 @@
-// require mongoose and setup the Schema
+
 var mongoose = require("mongoose");
 var Schema = mongoose.Schema;
-
-var User; // to be defined on new connection (see initialize)
-const URL = "mongodb+srv://mongoose:mongoose16@weba6.nnj8k3q.mongodb.net/?retryWrites=true&w=majority";
-
-// require bcrypt for password hashing
 const bcrypt = require('bcryptjs');
 
 
-// define the company schema
+
+//Schema
 var userSchema = new Schema({
-    "userName": {
-        "type": String,
-        "unique": true
-    },
-    "password": String,
-    "email": String,
-    "loginHistory": [{
-        "dateTime": Date,
-        "userAgent": String
-    }]
+  "userName":  {
+    "type": String,
+    "unique": true
+  },
+  "password": String,
+  "email": String,
+  "loginHistory": [{
+    "dateTime": Date,
+    "userAgent": String
+  }]
 });
 
+
+
+//Initialize
+let url = "mongodb+srv://mongoose:mongoose16@weba6.nnj8k3q.mongodb.net/?retryWrites=true&w=majority"
+
+let User;
+
 exports.initialize = () => {
-    return new Promise( (resolve, reject) => {
-        let db = mongoose.createConnection(URL,  {useNewUrlParser: true, useUnifiedTopology: true}, function (err) {
-            if (err) {
-                console.log(`\nError connecting to MongoDB Atlas: ${err}\n`);
+    return new Promise((resolve, reject)=> {
+        const db = mongoose.createConnection(url, {useNewUrlParser: true, useUnifiedTopology: true}, function(err){
+            if(err) {
+                console.log("FAILURE");
                 reject(err);
-            } 
+            }
             else {
-                console.log(`\nConnected to MongoDB Atlas\n`);
-                User = db.model("test", userSchema);
+                console.log("SUCCESS");
+                User = db.model("users", userSchema);
                 resolve();
             }
-        });
+        });  
     });
 }
 
+
+
+//Functions----------------------------------------------------------------------------------
+//userData contains: .userName, .userAgent, .email, .password, .password2
 exports.registerUser = (userData) => {
     return new Promise((resolve, reject) => {
         if (userData.password == null || userData.password.trim() == "" || 
@@ -49,36 +56,35 @@ exports.registerUser = (userData) => {
             reject("Error: Passwords do not match");
         }
         else {
-            bcrypt.hash(userData.password, 10)
+            bcrypt.hash(userData.password, 10)  //encrypt password
             .then((hash)=>{
                 userData.password = hash;
                 let newUser = new User(userData);
             
                 newUser.save()
                 .then(()=> {
-                    
                     resolve()
                 }).catch((err)=>{
                     if (err == 11000) 
                         reject("User Name already taken");
                     else
-                        reject("There was an error creating the user: " + err);
+                        reject(`There was an error creating the user: ${err}`);
                 });
 
             }).catch(err=> {
-                reject("There was an error encrypting the password: " + err);
+                reject("There was an error encrypting the password");
             });
         }
     });
 }
 
-
+//userData contains: .userName, .userAgent, .email, .password
 exports.checkUser = (userData) => {
     return new Promise((resolve, reject) => {
         User.findOne({ userName : userData.userName })
         .exec()
         .then((userFound) => {
-            if(userFound.userName == null || userFound.userName == "") { 
+            if(userFound.userName == null || userFound.userName == "") {  //if (!userFound)
                 reject(`Unable to find user: ${userData.userName}`);
             }
             else {
@@ -105,5 +111,4 @@ exports.checkUser = (userData) => {
         });
     });
 }   
-
 
