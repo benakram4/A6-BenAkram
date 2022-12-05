@@ -25,14 +25,14 @@ var userSchema = new Schema({
 
 exports.initialize = () => {
     return new Promise( (resolve, reject) => {
-        let db = mongoose.createConnection(URL,  {useNewUrlParser: true, useUnifiedTopology: true}, function (err) {
+        const db = mongoose.createConnection(URL,  {useNewUrlParser: true, useUnifiedTopology: true}, function (err) {
             if (err) {
                 console.log(`\nError connecting to MongoDB Atlas: ${err}\n`);
                 reject(err);
             } 
             else {
                 console.log(`\nConnected to MongoDB Atlas\n`);
-                User = db.model("test", userSchema);
+                User = db.model("test_one", userSchema);
                 resolve();
             }
         });
@@ -52,7 +52,7 @@ exports.registerUser = function (userData) {
             bcrypt.hash(userData.password, 10)
             .then((hash)=>{
                 userData.password = hash;
-                let newUser = new User(userData);
+                const newUser = new User(userData);
                     newUser.save()
                     .then(() => {
                             //console.log(`\nUser ${userData.userName} registered\n`);
