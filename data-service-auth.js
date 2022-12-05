@@ -1,7 +1,8 @@
 // require mongoose and setup the Schema
 var mongoose = require("mongoose");
 var Schema = mongoose.Schema;
-
+var User; // to be defined on new connection (see initialize)
+const URL = "mongodb+srv://webdev6:mongoose@cluster0.52rw2vp.mongodb.net/A6?retryWrites=true&w=majority";
 // require bcrypt for password hashing
 const bcrypt = require('bcryptjs');
 
@@ -20,8 +21,7 @@ var userSchema = new Schema({
     }]
 });
 
-let User; // to be defined on new connection (see initialize)
-const URL = "mongodb+srv://webdev6:mongoose@cluster0.52rw2vp.mongodb.net/A6?retryWrites=true&w=majority";
+
 
 exports.initialize = () => {
     return new Promise( (resolve, reject) => {
@@ -53,13 +53,9 @@ exports.registerUser = function (userData) {
         else {
             bcrypt.hash(userData.password, 10)
             .then((hash)=>{
-                userData.password = hash;
-                //User = mongoose.model('User', userSchema);
-                //module.exports =  { User }
-                // export the User model to a new object with userData as the data to be saved to the database  
-                let newUser = new User (userData);
-
-                    newUser.save()
+                userData.password = hash; 
+                let newUser = new User (userData); // code failed here with error: User is not a constructor
+                newUser.save()
                     .then(() => {
                             console.log(`\nUser ${userData.userName} registered\n`);
                         resolve();
