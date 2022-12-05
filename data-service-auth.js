@@ -56,16 +56,17 @@ exports.registerUser = (userData) => {
             
                 newUser.save()
                 .then(()=> {
+                    
                     resolve()
                 }).catch((err)=>{
                     if (err == 11000) 
                         reject("User Name already taken");
                     else
-                        reject(`There was an error creating the user: ${err}`);
+                        reject("There was an error creating the user: " + err);
                 });
 
             }).catch(err=> {
-                reject("There was an error encrypting the password" + err);
+                reject("There was an error encrypting the password: " + err);
             });
         }
     });
